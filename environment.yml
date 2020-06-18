@@ -1,0 +1,8 @@
+name: nim
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - click
+prefix: /Users/derekwang/miniconda3/envs/nim
+
