@@ -5,5 +5,5 @@ dependencies:
   - numpy
   - click
   - pytorch
+  - cudatoolkit=10.1
 prefix: /Users/derekwang/miniconda3/envs/nim
-
