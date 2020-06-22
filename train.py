@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch.optim import Adam
 
-from nim import NVM
+from nim import NVM, NVL
 
 
 def train_epoch(net, x, optimizer, batch_size):
@@ -60,9 +60,14 @@ def main(network, hidden_size, data, transform, lr, epochs, gpu, save):
 
         x = function(x)
 
-    n, t = x.shape
+    n = x.shape[0]
 
-    net = NVM(1, hidden_size)
+    if network == "nvm":
+        net = NVM(1, hidden_size)
+    elif network == "nvl":
+        net = NVL(1, hidden_size)
+    else:
+        raise ValueError("unknown network architecture")
     optimizer = Adam(net.parameters(), lr=lr)
 
     train(
