@@ -162,3 +162,9 @@ dmypy.json
 
 ### Visual Studio Code ###
 .vscode/
+
+### Project specific ###
+data.npy
+nvm.json
+nvm.pth
+samples.npy
