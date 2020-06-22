@@ -55,7 +55,7 @@ class NVM(nn.Module):
 
     def save(self, name):
         with open(f"{name}.json", "w") as f:
-            json.dump({"x_dim": self.x_dim, "h_dim": self.h_dim}, f)
+            json.dump({"type": "nvm", "x_dim": self.x_dim, "h_dim": self.h_dim}, f)
         torch.save(self.state_dict(), f"{name}.pth")
 
     def generate(self, n):
