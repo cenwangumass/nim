@@ -1,3 +1,4 @@
+import json
 import math
 
 import torch
@@ -51,6 +52,11 @@ class NVM(nn.Module):
         kl_loss = -0.5 * (1 + logvar_e - mu_e ** 2 - logvar_e.exp())
         loss = torch.sum(reconstruction_loss) + torch.sum(kl_loss)
         return loss
+
+    def save(self, name):
+        with open(f"{name}.json", "w") as f:
+            json.dump({"x_dim": self.x_dim, "h_dim": self.h_dim}, f)
+        torch.save(self.state_dict(), f"{name}.pth")
 
     def generate(self, n):
         with torch.no_grad():
