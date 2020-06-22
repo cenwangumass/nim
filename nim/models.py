@@ -58,8 +58,17 @@ class NVM(nn.Module):
             json.dump({"type": "nvm", "x_dim": self.x_dim, "h_dim": self.h_dim}, f)
         torch.save(self.state_dict(), f"{name}.pth")
 
-    def generate(self, n):
+    def generate(self, size):
+        if isinstance(size, int):
+            n = size
+            t = 1
+        elif isinstance(size, tuple):
+            n, t = size
+        else:
+            raise ValueError("size must be an integer or a tuple")
+        total = n * t
+
         with torch.no_grad():
-            z = torch.randn(n, self.x_dim)
+            z = torch.randn(total, self.x_dim)
             mu_d, logvar_d = self.decode(z)
-            return self._sample(mu_d, logvar_d)
+            return self._sample(mu_d, logvar_d).view(size)
