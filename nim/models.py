@@ -99,19 +99,19 @@ class NVL(nn.Module):
         logvar_e = self.logvar_e(h_e)
         return mu_e, logvar_e
 
-    def decode(self, x_previous, z):
+    def decode(self, x_previous, z, hidden=None):
         z = torch.cat([x_previous, z], 2)
-        h_d, _ = self.h_d(z)
+        h_d, hidden = self.h_d(z, hidden)
         mu_d = self.mu_d(h_d)
         logvar_d = self.logvar_d(h_d)
-        return mu_d, logvar_d
+        return mu_d, logvar_d, hidden
 
     def forward(self, x):
         mu_e, logvar_e = self.encode(x)
         z = self._sample(mu_e, logvar_e)
         x_previous = torch.zeros_like(x)
         x_previous[:, 1:] = x[:, :-1]
-        mu_d, logvar_d = self.decode(x_previous, z)
+        mu_d, logvar_d, _ = self.decode(x_previous, z)
         return mu_e, logvar_e, mu_d, logvar_d
 
     def loss_function(self, x, mu_e, logvar_e, mu_d, logvar_d):
@@ -134,10 +134,11 @@ class NVL(nn.Module):
         z = torch.randn(n, t, self.x_dim)
 
         with torch.no_grad():
+            hidden = (torch.zeros(1, n, self.h_dim), torch.zeros(1, n, self.h_dim))
             for i in range(t):
                 x_previous = y[:, i : i + 1, :]
                 z_t = z[:, i : i + 1, :]
-                mu_d, logvar_d = self.decode(x_previous, z_t)
+                mu_d, logvar_d, hidden = self.decode(x_previous, z_t, hidden=hidden)
                 y_t = self._sample(mu_d, logvar_d)
                 y[:, i + 1, :] = y_t[:, 0, :]
 
