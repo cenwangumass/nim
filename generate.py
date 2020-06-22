@@ -5,7 +5,7 @@ import click
 import numpy as np
 import torch
 
-from nim import NVM
+from nim import NVM, NVL
 
 
 def load(filename):
@@ -15,6 +15,10 @@ def load(filename):
     type = description.pop("type")
     if type == "nvm":
         network_class = NVM
+    elif type == "nvl":
+        network_class = NVL
+    else:
+        raise ValueError("unknown network architecture")
 
     net = network_class(**description)
 
