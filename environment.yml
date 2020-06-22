@@ -4,5 +4,6 @@ channels:
 dependencies:
   - numpy
   - click
+  - pytorch
 prefix: /Users/derekwang/miniconda3/envs/nim
 
