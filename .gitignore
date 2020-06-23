@@ -164,9 +164,9 @@ dmypy.json
 .vscode/
 
 ### Project specific ###
-data.npy
-nvm.json
-nvm.pth
-nvl.json
-nvl.pth
-samples.npy
+examples/data.npy
+examples/nvm.json
+examples/nvm.pth
+examples/nvl.json
+examples/nvl.pth
+examples/samples.npy
