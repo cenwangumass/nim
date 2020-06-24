@@ -42,15 +42,15 @@ def train(net, data, optimizer, epochs, batch_size, device):
 
 
 @click.command()
-@click.option("--network", required=True)
-@click.option("--hidden-size", required=True, type=int)
-@click.option("--data", required=True)
+@click.option("--hidden-size", default=32, type=int)
 @click.option("--transform")
 @click.option("--lr", default=1e-3, type=float)
 @click.option("--epochs", default=1000, type=int)
 @click.option("--gpu", default=False, is_flag=True)
-@click.option("--save", required=True)
-def main(network, hidden_size, data, transform, lr, epochs, gpu, save):
+@click.option("--save")
+@click.argument("network")
+@click.argument("data")
+def main(network, data, hidden_size, transform, lr, epochs, gpu, save):
     x = np.load(data)
 
     if transform is not None:
@@ -79,6 +79,8 @@ def main(network, hidden_size, data, transform, lr, epochs, gpu, save):
         device="cuda" if gpu else "cpu",
     )
 
+    if save is None:
+        save = network
     net.save(save)
 
 

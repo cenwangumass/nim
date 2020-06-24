@@ -29,10 +29,10 @@ def load(filename):
 
 
 @click.command()
-@click.option("--network", required=True, type=click.Path())
 @click.option("--transform")
 @click.option("-n", required=True, type=int)
 @click.option("-t", required=True, type=int)
+@click.argument("network", type=click.Path())
 @click.argument("save")
 def main(network, transform, n, t, save):
     net = load(network)
