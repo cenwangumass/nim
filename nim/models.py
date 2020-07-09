@@ -93,8 +93,8 @@ class NVL(nn.Module):
         eps = torch.randn_like(mu)
         return mu + (logvar / 2).exp() * eps
 
-    def encode(self, x):
-        h_e, _ = self.h_e(x)
+    def encode(self, x, hidden=None):
+        h_e, _ = self.h_e(x, hidden)
         mu_e = self.mu_e(h_e)
         logvar_e = self.logvar_e(h_e)
         return mu_e, logvar_e
@@ -106,12 +106,12 @@ class NVL(nn.Module):
         logvar_d = self.logvar_d(h_d)
         return mu_d, logvar_d, hidden
 
-    def forward(self, x):
-        mu_e, logvar_e = self.encode(x)
+    def forward(self, x, hidden_e=None, hidden_d=None):
+        mu_e, logvar_e = self.encode(x, hidden_e)
         z = self._sample(mu_e, logvar_e)
         x_previous = torch.zeros_like(x)
         x_previous[:, 1:] = x[:, :-1]
-        mu_d, logvar_d, _ = self.decode(x_previous, z)
+        mu_d, logvar_d, _ = self.decode(x_previous, z, hidden_d)
         return mu_e, logvar_e, mu_d, logvar_d
 
     def loss_function(self, x, mu_e, logvar_e, mu_d, logvar_d):
