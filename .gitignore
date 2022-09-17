@@ -170,3 +170,5 @@ examples/nvm.pth
 examples/nvl.json
 examples/nvl.pth
 examples/samples.npy
+
+lightning_logs/

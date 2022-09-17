@@ -1,1 +1,1 @@
-from .models import NVM, NVL
+from .models import Net
